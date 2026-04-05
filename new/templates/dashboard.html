@@ -1,0 +1,582 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - MyFitness{% endblock %}
+
+{% block extra_head %}
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<style>
+  /* Color Palette Variables */
+  :root {
+    --primary-purple: #667eea;
+    --primary-dark-purple: #764ba2;
+    --primary-pink: #f093fb;
+    --accent-coral: #f5576c;
+    --success-green: #10b981;
+    --warning-orange: #f59e0b;
+    --info-blue: #3b82f6;
+    --light-bg: #f8fafc;
+    --card-white: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+  }
+
+  body {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+    min-height: 100vh;
+    color: var(--text-dark);
+  }
+
+  /* Hero Section */
+  .dashboard-hero {
+    background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-dark-purple) 50%, var(--primary-pink) 100%);
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dashboard-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    animation: float 8s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* Modern Light Cards */
+  .metric-card {
+    background: var(--card-white);
+    border-radius: 25px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.08);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    position: relative;
+  }
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-purple), var(--primary-pink));
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+  .metric-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+  }
+  .metric-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Icon Styles */
+  .metric-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: all 0.3s ease;
+  }
+  .metric-card:hover .metric-icon {
+    transform: scale(1.1) rotate(5deg);
+  }
+
+  /* Gradient Backgrounds for Icons */
+  .bg-purple-gradient {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+  }
+  .bg-pink-gradient {
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+  }
+  .bg-green-gradient {
+    background: linear-gradient(135deg, #10b981, #059669);
+  }
+  .bg-orange-gradient {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+  }
+  .bg-blue-gradient {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+  }
+
+  /* Progress Bar */
+  .progress-modern {
+    height: 12px;
+    border-radius: 10px;
+    background: #e2e8f0;
+    overflow: hidden;
+  }
+  .progress-bar-gradient {
+    background: linear-gradient(90deg, var(--primary-purple), var(--primary-pink));
+    border-radius: 10px;
+    transition: width 1s ease;
+  }
+
+  /* Workout/Meal Item Cards */
+  .activity-item {
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    border-radius: 15px;
+    border: 1px solid var(--border-light);
+    padding: 20px;
+    transition: all 0.3s ease;
+  }
+  .activity-item:hover {
+    border-color: var(--primary-purple);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.1);
+    transform: translateX(5px);
+  }
+
+  /* Badges */
+  .badge-modern {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.875rem;
+  }
+  .badge-orange {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+  }
+  .badge-green {
+    background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+    color: #065f46;
+  }
+
+  /* Buttons */
+  .btn-gradient-purple {
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark-purple));
+    border: none;
+    color: white;
+    border-radius: 15px;
+    padding: 15px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+  .btn-gradient-purple:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    color: white;
+  }
+
+  .btn-gradient-orange {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    color: white;
+    border-radius: 15px;
+    padding: 15px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
+  }
+  .btn-gradient-orange:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(245, 158, 11, 0.4);
+    color: white;
+  }
+
+  .btn-gradient-green {
+    background: linear-gradient(135deg, #10b981, #059669);
+    border: none;
+    color: white;
+    border-radius: 15px;
+    padding: 15px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+  }
+  .btn-gradient-green:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(16, 185, 129, 0.4);
+    color: white;
+  }
+
+  .btn-outline-modern {
+    background: white;
+    border: 2px solid var(--primary-purple);
+    color: var(--primary-purple);
+    border-radius: 15px;
+    padding: 15px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-outline-modern:hover {
+    background: var(--primary-purple);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  /* Table Styles */
+  .table-modern {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .table-modern thead th {
+    background: linear-gradient(135deg, #f8f9ff, #f0f4ff);
+    color: var(--text-dark);
+    font-weight: 700;
+    border: none;
+    padding: 20px;
+  }
+  .table-modern tbody tr {
+    border-bottom: 1px solid var(--border-light);
+    transition: all 0.2s ease;
+  }
+  .table-modern tbody tr:hover {
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    transform: scale(1.01);
+  }
+  .table-modern tbody td {
+    padding: 20px;
+    vertical-align: middle;
+  }
+
+  /* Quick Action Cards */
+  .quick-action-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.08);
+  }
+  .quick-action-card:hover {
+    border-color: var(--primary-purple);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.15);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+  }
+  .empty-state i {
+    opacity: 0.3;
+    margin-bottom: 20px;
+  }
+
+  /* Stats Display */
+  .stat-display {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Calorie Comparison Box */
+  .calorie-box {
+    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    border-radius: 15px;
+    padding: 20px;
+    border: 1px solid var(--border-light);
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<!-- Hero Welcome -->
+<section class="dashboard-hero py-5 mb-5 position-relative overflow-hidden">
+  <div class="container text-white">
+    <div class="row align-items-center">
+      <div class="col-lg-8" data-aos="fade-right">
+        <h1 class="display-3 fw-bold mb-4">Welcome back, {{ user.get_full_name|default:user.username }}! 🚀</h1>
+        <p class="lead fs-3 mb-0" data-aos="fade-up" data-aos-delay="200">Your fitness journey dashboard</p>
+      </div>
+      <div class="col-lg-4 text-center" data-aos="zoom-in">
+        <div class="metric-icon mx-auto mb-3">
+          <i class="fas fa-trophy fa-2x"></i>
+        </div>
+        <h3 class="fw-bold mb-2">Level Up</h3>
+        <p class="text-white-50 mb-0">Keep crushing goals!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 mb-5">
+      <!-- Subscription -->
+      {% if subscription %}
+      <div class="col-lg-6" data-aos="fade-up">
+        <div class="metric-card h-100 p-4 position-relative">
+          <div class="position-absolute top-0 end-0 m-4">
+            <i class="fas fa-crown fa-2x" style="color: #fbbf24;"></i>
+          </div>
+          <h3 class="fw-bold mb-4 fs-4" style="color: var(--primary-purple);">
+            <i class="fas fa-star me-2"></i>{{ subscription.plan.name }}
+          </h3>
+          <div class="mb-4">
+            <div class="progress-modern">
+              <div class="progress-bar-gradient" role="progressbar" 
+                   style="width: {{ subscription.days_remaining }}%;"
+                   aria-valuenow="{{ subscription.days_remaining }}" aria-valuemin="0" aria-valuemax="100">
+              </div>
+            </div>
+            <p class="text-muted mt-2 mb-0 small">{{ subscription.days_remaining }} days remaining</p>
+          </div>
+          <div class="row text-center g-3">
+            <div class="col-6">
+              <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9ff, #ffffff);">
+                <h4 class="fw-bold mb-1" style="color: var(--primary-purple);">{{ subscription.days_remaining }}</h4>
+                <small class="text-muted">Days Left</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9ff, #ffffff);">
+                <h4 class="fw-bold mb-1" style="color: var(--success-green);">₹{{ subscription.plan.price }}</h4>
+                <small class="text-muted">Plan Value</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Health Stats -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="metric-card h-100 p-4 position-relative">
+          <div class="position-absolute top-0 end-0 m-4">
+            <i class="fas fa-heartbeat fa-2x" style="color: #f5576c;"></i>
+          </div>
+          {% if health_profile %}
+          <h3 class="fw-bold mb-4 fs-4" style="color: var(--primary-purple);">
+            <i class="fas fa-heart me-2"></i>Health Overview
+          </h3>
+          <div class="row text-center g-3">
+            <div class="col-4">
+              <div class="metric-icon bg-green-gradient mb-2 mx-auto">
+                <i class="fas fa-weight text-white"></i>
+              </div>
+              <h5 class="fw-bold mb-1" style="color: var(--text-dark);">{{ health_profile.weight }}kg</h5>
+              <small class="text-muted">Weight</small>
+            </div>
+            <div class="col-4">
+              <div class="metric-icon bg-blue-gradient mb-2 mx-auto">
+                <i class="fas fa-heartbeat text-white"></i>
+              </div>
+              <h5 class="fw-bold mb-1" style="color: var(--text-dark);">{{ health_profile.bmi|floatformat:1 }}</h5>
+              <small class="text-muted">BMI</small>
+            </div>
+            <div class="col-4">
+              <div class="metric-icon bg-purple-gradient mb-2 mx-auto">
+                <i class="fas fa-user text-white"></i>
+              </div>
+              <h5 class="fw-bold mb-1" style="color: var(--text-dark);">{{ health_profile.age_group|default:"—" }}</h5>
+              <small class="text-muted">Age Group</small>
+            </div>
+          </div>
+          {% else %}
+          <div class="empty-state">
+            <i class="fas fa-user-md fa-4x" style="color: var(--text-muted);"></i>
+            <h5 class="mt-3 mb-2" style="color: var(--text-dark);">Complete Health Profile</h5>
+            <p class="text-muted mb-4">Unlock personalized fitness insights</p>
+            <a href="{% url 'profile_setup' %}" class="btn btn-gradient-purple">
+              <i class="fas fa-plus me-2"></i>Setup Profile
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Activity -->
+    <div class="row g-4 mb-5">
+      <div class="col-lg-6" data-aos="fade-up">
+        <div class="metric-card p-4">
+          <h3 class="fw-bold mb-3 fs-4" style="color: var(--warning-orange);">
+            <i class="fas fa-fire me-2"></i>Today's Burn
+          </h3>
+          <div class="stat-display mb-4">{{ today_calories_burned|default:0 }}<span class="fs-4">kcal</span></div>
+          {% if today_workouts %}
+          <div class="mb-4">
+            {% for workout in today_workouts %}
+            <div class="activity-item mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color: var(--text-dark);">{{ workout.exercise.name }}</h6>
+                <span class="badge-modern badge-orange">{{ workout.calories_burned }}kcal</span>
+              </div>
+              <p class="text-muted small mb-0">
+                <i class="fas fa-clock me-1"></i>{{ workout.duration_minutes }}min • 
+                <i class="fas fa-redo me-1"></i>{{ workout.sets }} sets
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+          <a href="{% url 'workout_logging' %}" class="btn btn-gradient-orange w-100">
+            <i class="fas fa-plus me-2"></i>Log Workout
+          </a>
+          {% else %}
+          <div class="empty-state">
+            <i class="fas fa-dumbbell fa-4x" style="color: var(--text-muted);"></i>
+            <h5 class="mt-3 mb-2" style="color: var(--text-dark);">No Workouts Today</h5>
+            <p class="text-muted mb-4">Start tracking your exercises</p>
+            <a href="{% url 'workout_logging' %}" class="btn btn-outline-modern">
+              <i class="fas fa-plus me-2"></i>Log First Workout
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="metric-card p-4">
+          <h3 class="fw-bold mb-3 fs-4" style="color: var(--success-green);">
+            <i class="fas fa-utensils me-2"></i>Meals Today
+          </h3>
+          <div class="stat-display mb-4">{{ today_calories_consumed|default:0 }}<span class="fs-4">kcal</span></div>
+          {% if today_meals %}
+          <div class="mb-4">
+            {% for meal in today_meals %}
+            <div class="activity-item mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="fw-bold mb-0" style="color: var(--text-dark);">{{ meal.meal.name }}</h6>
+                <span class="badge-modern badge-green">{{ meal.calories_consumed }}kcal</span>
+              </div>
+              <p class="text-muted small mb-0">
+                <i class="fas fa-utensils me-1"></i>{{ meal.quantity }} serving{{ meal.quantity|pluralize }}
+              </p>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="calorie-box mb-4">
+            <div class="row text-center g-3">
+              <div class="col-6">
+                <small class="text-muted d-block">Consumed</small>
+                <h5 class="fw-bold mb-0" style="color: var(--success-green);">{{ today_calories_consumed }}kcal</h5>
+              </div>
+              <div class="col-6">
+                <small class="text-muted d-block">Burned</small>
+                <h5 class="fw-bold mb-0" style="color: var(--warning-orange);">{{ today_calories_burned }}kcal</h5>
+              </div>
+            </div>
+          </div>
+          <a href="{% url 'meal_logging' %}" class="btn btn-gradient-green w-100">
+            <i class="fas fa-plus me-2"></i>Add Meal
+          </a>
+          {% else %}
+          <div class="empty-state">
+            <i class="fas fa-utensils fa-4x" style="color: var(--text-muted);"></i>
+            <h5 class="mt-3 mb-2" style="color: var(--text-dark);">No Meals Logged</h5>
+            <p class="text-muted mb-4">Track your nutrition today</p>
+            <a href="{% url 'meal_logging' %}" class="btn btn-outline-modern">
+              <i class="fas fa-plus me-2"></i>Log First Meal
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row g-4 mb-5">
+      <div class="col-xl-3 col-lg-3 col-md-6" data-aos="fade-up">
+        <a href="{% url 'progress_tracking' %}" class="quick-action-card d-flex flex-column align-items-center text-center h-100">
+          <div class="metric-icon bg-blue-gradient mb-3">
+            <i class="fas fa-chart-line text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--text-dark);">Progress</h5>
+          <p class="text-muted small mb-0">Track measurements</p>
+        </a>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <a href="{% url 'workout_logging' %}" class="quick-action-card d-flex flex-column align-items-center text-center h-100">
+          <div class="metric-icon bg-purple-gradient mb-3">
+            <i class="fas fa-dumbbell text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--text-dark);">Workouts</h5>
+          <p class="text-muted small mb-0">Log exercises</p>
+        </a>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <a href="{% url 'meal_logging' %}" class="quick-action-card d-flex flex-column align-items-center text-center h-100">
+          <div class="metric-icon bg-green-gradient mb-3">
+            <i class="fas fa-utensils text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--text-dark);">Nutrition</h5>
+          <p class="text-muted small mb-0">Log meals</p>
+        </a>
+      </div>
+      <div class="col-xl-3 col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <a href="{% url 'exercise_list' %}" class="quick-action-card d-flex flex-column align-items-center text-center h-100">
+          <div class="metric-icon bg-orange-gradient mb-3">
+            <i class="fas fa-list text-white"></i>
+          </div>
+          <h5 class="fw-bold mb-2" style="color: var(--text-dark);">Library</h5>
+          <p class="text-muted small mb-0">Browse exercises</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Recent Progress -->
+    {% if recent_progress %}
+    <div class="row" data-aos="fade-up">
+      <div class="col-12">
+        <div class="metric-card p-4">
+          <h3 class="fw-bold mb-4 fs-4" style="color: var(--text-dark);">
+            <i class="fas fa-history me-2" style="color: var(--primary-purple);"></i>Recent Progress
+          </h3>
+          <div class="table-responsive">
+            <table class="table table-modern">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Weight</th>
+                  <th>Body Fat</th>
+                  <th>Muscle</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for progress in recent_progress %}
+                <tr>
+                  <td class="fw-semibold">{{ progress.date|date:"M d, Y" }}</td>
+                  <td class="fw-bold" style="color: var(--info-blue);">{{ progress.weight|floatformat:1 }}kg</td>
+                  <td style="color: var(--text-dark);">{{ progress.body_fat_percentage|floatformat:1 }}%</td>
+                  <td style="color: var(--success-green);">{{ progress.muscle_mass|floatformat:1 }}kg</td>
+                  <td class="text-muted">{{ progress.notes|default:"—"|truncatewords:8 }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center mt-4">
+            <a href="{% url 'progress_tracking' %}" class="btn btn-gradient-purple">
+              <i class="fas fa-plus-circle me-2"></i>Track More Progress
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({ 
+  duration: 1000, 
+  easing: 'ease-out-cubic', 
+  once: true 
+});
+</script>
+{% endblock %}

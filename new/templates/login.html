@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login - MyFitness{% endblock %}
+
+{% block extra_head %}
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<style>
+:root {
+  --primary-purple: #667eea;
+  --primary-dark-purple: #764ba2;
+  --primary-pink: #f093fb;
+  --accent-coral: #f5576c;
+}
+
+.login-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.login-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border-radius: 50%;
+  animation: float 15s ease-in-out infinite;
+}
+
+.login-section::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+  border-radius: 50%;
+  animation: float 12s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(5deg); }
+}
+
+.login-card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.login-header {
+  background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-dark-purple) 50%, var(--primary-pink) 100%);
+  padding: 60px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.login-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+}
+
+.login-icon {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.login-icon i {
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.login-header h2 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.login-header p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.login-body {
+  padding: 50px 40px;
+}
+
+.form-label {
+  color: var(--primary-purple);
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  padding: 14px 18px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.btn-login {
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark-purple));
+  border: none;
+  color: white;
+  border-radius: 12px;
+  padding: 15px 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  width: 100%;
+}
+
+.btn-login:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+
+.btn-register {
+  background: transparent;
+  border: 2px solid var(--primary-purple);
+  color: var(--primary-purple);
+  border-radius: 12px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.btn-register:hover {
+  background: var(--primary-purple);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.divider span {
+  padding: 0 15px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.forgot-link {
+  color: var(--primary-purple);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.forgot-link:hover {
+  color: var(--primary-dark-purple);
+  text-decoration: underline;
+}
+
+.stats-box {
+  background: linear-gradient(135deg, #f8f9ff, #ffffff);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.stats-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-label {
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="login-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="login-card" data-aos="zoom-in">
+          <div class="row g-0">
+            <!-- Left Side - Welcome -->
+            <div class="col-lg-5">
+              <div class="login-header">
+                <div class="login-icon">
+                  <i class="fas fa-dumbbell"></i>
+                </div>
+                <h2>Welcome Back!</h2>
+                <p>Continue your fitness journey</p>
+              </div>
+              
+              <div class="p-4">
+                <h5 class="fw-bold mb-4 text-center" style="color: var(--primary-purple);">Your Progress Awaits</h5>
+                
+                <div class="stats-box">
+                  <div class="stats-number">1000+</div>
+                  <div class="stats-label">Active Members</div>
+                </div>
+
+                <div class="stats-box">
+                  <div class="stats-number">50+</div>
+                  <div class="stats-label">Exercise Tutorials</div>
+                </div>
+
+                <div class="stats-box">
+                  <div class="stats-number">99%</div>
+                  <div class="stats-label">Success Rate</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side - Form -->
+            <div class="col-lg-7">
+              <div class="login-body">
+                <div class="text-center mb-4">
+                  <h3 class="fw-bold mb-2" style="color: var(--primary-purple);">Sign In</h3>
+                  <p class="text-muted">Enter your credentials to access your account</p>
+                </div>
+
+                {% if messages %}
+                  {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                  {% endfor %}
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                  {% csrf_token %}
+                  
+                  <div class="mb-3">
+                    <label class="form-label">
+                      <i class="fas fa-user me-2"></i>Username
+                    </label>
+                    {{ form.username }}
+                  </div>
+
+                  <div class="mb-3">
+                    <label class="form-label">
+                      <i class="fas fa-lock me-2"></i>Password
+                    </label>
+                    {{ form.password }}
+                  </div>
+
+                  <div class="text-end mb-4">
+                    <a href="#" class="forgot-link">
+                      <i class="fas fa-key me-1"></i>Forgot Password?
+                    </a>
+                  </div>
+
+                  <div class="d-grid">
+                    <button type="submit" class="btn-login">
+                      <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </button>
+                  </div>
+                </form>
+
+                <div class="divider">
+                  <span>Don't have an account?</span>
+                </div>
+
+                <div class="d-grid">
+                  <a href="{% url 'register' %}" class="btn-register">
+                    <i class="fas fa-user-plus me-2"></i>Create Account
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({duration: 1000});
+</script>
+{% endblock %}

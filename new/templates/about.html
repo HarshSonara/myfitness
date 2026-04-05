@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About - MyFitness{% endblock %}
+
+{% block extra_head %}
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  .profile-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+  }
+  .floating-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+  }
+  .profile-photo {
+    width: 320px;
+    height: 400px;
+    object-fit: cover;
+    border: 8px solid rgba(255,255,255,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    transition: all 0.5s ease;
+  }
+  .profile-photo:hover {
+    transform: scale(1.05) rotate(5deg);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .neon-text {
+    text-shadow: 0 0 10px currentColor;
+  }
+  .feature-grid {
+    background: linear-gradient(145deg, #f0f2f5, #ffffff);
+  }
+  .cta-section {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 50%, #0f172a 100%);
+  }
+  .cta-card {
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<!-- Hero Section -->
+<section class="profile-hero py-5 position-relative overflow-hidden min-vh-60 d-flex align-items-center">
+  <div class="container position-relative">
+    <div class="row align-items-center">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="floating-card p-5 rounded-4">
+          <h1 class="display-1 fw-bold mb-4 neon-text text-white">HARSH</h1>
+          <h1 class="display-1 fw-bold mb-5 neon-text text-white">SONARA</h1>
+          <div class="h1 mb-4 text-white-50">Founder & Visionary</div>
+          <p class="lead text-light mb-5 fs-4">Transforming fitness through beautiful technology</p>
+          <div class="d-flex gap-3 flex-wrap">
+            <a href="mailto:sonaraharsh791@gmail.com" class="btn btn-light btn-lg px-5 py-3 neon-glow fs-5">
+              <i class="fas fa-envelope me-2"></i>Contact
+            </a>
+            <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg px-5 py-3 neon-glow fs-5">
+              Start Fitness Journey
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center" data-aos="zoom-in" data-aos-delay="300">
+        <img src="/static/img/harsh-profile.jpg" 
+             class="profile-photo rounded-circle img-fluid mx-auto d-block shadow-lg" 
+             alt="Harsh Sonara"
+             onerror="this.src='/static/img/default-exercise.jpg';">
+        <div class="text-center mt-4">
+          <i class="fas fa-dumbbell fa-spin fa-2x text-primary"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Grid -->
+<section class="py-5 feature-grid">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="display-4 fw-bold mb-3" data-aos="fade-up">Why Harsh Built This</h2>
+      <p class="lead text-muted fs-4" data-aos="fade-up" data-aos-delay="200">4 Pillars of MyFitness Excellence</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="floating-card p-5 h-100 rounded-4 text-center">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-dumbbell fa-4x text-primary"></i>
+          </div>
+          <h4 class="fw-bold text-dark mb-3">Science First</h4>
+          <p class="text-muted">Built on real fitness research, not trends. Proven results.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="floating-card p-5 h-100 rounded-4 text-center">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-mobile-alt fa-4x text-success"></i>
+          </div>
+          <h4 class="fw-bold text-dark mb-3">Mobile Ready</h4>
+          <p class="text-muted">Perfect on phone, tablet, desktop. Track anywhere.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <div class="floating-card p-5 h-100 rounded-4 text-center">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-brain fa-4x text-info"></i>
+          </div>
+          <h4 class="fw-bold text-dark mb-3">AI Smart</h4>
+          <p class="text-muted">Personalized recommendations powered by machine learning.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+        <div class="floating-card p-5 h-100 rounded-4 text-center">
+          <div class="feature-icon mb-4">
+            <i class="fas fa-shield-alt fa-4x text-warning"></i>
+          </div>
+          <h4 class="fw-bold text-dark mb-3">Privacy First</h4>
+          <p class="text-muted">Your data stays yours. No selling, no tracking.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="py-5" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
+  <div class="container">
+    <div class="text-center mb-6">
+      <h2 class="display-4 fw-bold mb-3" data-aos="fade-up">My Journey</h2>
+      <p class="lead text-muted" data-aos="fade-up" data-aos-delay="200">From Gym to Code</p>
+    </div>
+    
+    <div class="timeline">
+      <div class="timeline-item" data-aos="fade-up">
+        <div class="timeline-dot bg-primary"></div>
+        <div class="timeline-content">
+          <h4>2018 - Fitness Trainer</h4>
+          <p>Started training clients. Saw need for better apps.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="200">
+        <div class="timeline-dot bg-success"></div>
+        <div class="timeline-content">
+          <h4>2020 - Learned Coding</h4>
+          <p>Django, Python mastery. First prototypes built.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="300">
+        <div class="timeline-dot bg-info"></div>
+        <div class="timeline-content">
+          <h4>2023 - Launched MyFitness</h4>
+          <p>Full production app live.</p>
+        </div>
+      </div>
+      <div class="timeline-item" data-aos="fade-up" data-aos-delay="400">
+        <div class="timeline-dot bg-warning"></div>
+        <div class="timeline-content">
+          <h4>2024 - Scaling Up</h4>
+          <p>AI features + global expansion.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact CTA -->
+<section class="py-5 cta-section">
+  <div class="container">
+    <div class="cta-card p-5 rounded-4 text-center" data-aos="zoom-in">
+      <i class="fas fa-comments fa-3x mb-4 text-primary"></i>
+      <h2 class="display-4 fw-bold mb-4">Ready To Transform?</h2>
+      <p class="lead fs-4 mb-5 mx-auto" style="max-width: 600px;">Join thousands building better habits with MyFitness</p>
+      <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+        <a href="{% url 'register' %}" class="btn btn-primary btn-lg px-6 py-3 fs-5">
+          <i class="fas fa-dumbbell me-2"></i>Start Free
+        </a>
+        <a href="mailto:sonaraharsh791@gmail.com?subject=MyFitness" class="btn btn-outline-primary btn-lg px-6 py-3 fs-5">
+          <i class="fas fa-envelope me-2"></i>Contact Harsh
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({ duration: 1200, once: true });
+</script>
+{% endblock %}

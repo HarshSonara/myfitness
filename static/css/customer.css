@@ -1,0 +1,32 @@
+.signin__form__text {
+    margin: 0 auto;
+    max-width: 800px;
+    align: center;
+}
+
+/* Style the form header */
+h1 {
+    color: black;
+}
+
+/* Style the form labels */
+.col-form-label {
+    font-weight: bold;
+}
+
+/* Style the form inputs and buttons */
+.form-control {
+    margin-bottom: 10px;
+}
+
+.form-check-input {
+    margin-right: 5px;
+}
+
+.btn-primary {
+    background-color: #F4952F;
+    color: #fff;
+    width: 200px;
+    margin: 0px 200px;
+    align: center;
+}

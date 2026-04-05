@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Plans - MyFitness{% endblock %}
+
+{% block extra_head %}
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+<style>
+/* GLOBAL */
+body {
+  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  color: #e2e8f0;
+}
+
+/* HERO */
+.hero {
+  padding: 80px 0;
+  text-align: center;
+}
+
+/* CARD */
+.plan-card {
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 40px;
+  transition: 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+}
+
+/* POPULAR */
+.popular {
+  border: 2px solid #f093fb;
+  transform: scale(1.05);
+}
+
+/* PRICE */
+.price {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+/* FEATURE */
+.feature {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* BUTTON */
+.btn-custom {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  border: none;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.btn-custom:hover {
+  background: linear-gradient(135deg, #5a6fd1, #6a4190);
+}
+
+/* FAQ */
+.faq-box {
+  background: rgba(255,255,255,0.08);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="display-4 fw-bold">Choose Your Plan</h1>
+  <p class="lead">Simple pricing. Powerful results.</p>
+</section>
+
+<!-- PLANS -->
+<div class="container">
+  <div class="row g-4 justify-content-center">
+
+    {% for plan in plans %}
+    <div class="col-md-4" data-aos="fade-up">
+
+      <div class="plan-card {% if plan.is_popular %}popular{% endif %}">
+
+        <h3 class="text-center mb-3">{{ plan.name }}</h3>
+
+        <div class="text-center price mb-3">
+          ₹{{ plan.price }}
+        </div>
+
+        <p class="text-center mb-4">{{ plan.duration_days }} days</p>
+
+        <!-- FEATURES -->
+        {% for feature in plan.features %}
+
+        <div class="feature">
+          <i class="fas fa-check text-success"></i> {{ feature }}
+        </div>
+        {% endfor %}
+
+        <!-- BUTTON -->
+        <div class="mt-4">
+          {% if user.is_authenticated %}
+            <a href="{% url 'payment' plan.id %}" class="btn btn-custom w-100">
+              Buy Now
+            </a>
+          {% else %}
+            <a href="{% url 'register' %}" class="btn btn-outline-light w-100">
+              Sign Up
+            </a>
+          {% endif %}
+        </div>
+
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="container mt-5">
+  <h2 class="text-center mb-4">FAQ</h2>
+
+  <div class="faq-box">
+    <b>Can I change plans?</b>
+    <p>Yes, anytime.</p>
+  </div>
+
+  <div class="faq-box">
+    <b>Free trial?</b>
+    <p>7 days available.</p>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init();
+</script>
+
+{% endblock %}

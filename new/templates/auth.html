@@ -1,0 +1,428 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign In / Sign Up - MyFitness{% endblock %}
+
+{% block extra_head %}
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<style>
+:root {
+  --primary-purple: #667eea;
+  --primary-dark-purple: #764ba2;
+  --primary-pink: #f093fb;
+  --accent-coral: #f5576c;
+}
+
+.auth-section {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+  padding: 80px 0;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.auth-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  border-radius: 50%;
+  animation: float 15s ease-in-out infinite;
+}
+
+.auth-section::after {
+  content: '';
+  position: absolute;
+  bottom: -50%;
+  left: -10%;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(240, 147, 251, 0.1), rgba(245, 87, 108, 0.1));
+  border-radius: 50%;
+  animation: float 12s ease-in-out infinite reverse;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-30px) rotate(5deg); }
+}
+
+.auth-card {
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-header {
+  background: linear-gradient(135deg, var(--primary-purple) 0%, var(--primary-dark-purple) 50%, var(--primary-pink) 100%);
+  padding: 50px 40px;
+  text-align: center;
+  position: relative;
+}
+
+.auth-logo {
+  width: 100px;
+  height: 100px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.auth-logo i {
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.auth-header h2 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0;
+}
+
+.auth-body {
+  padding: 40px;
+}
+
+.nav-tabs {
+  border: none;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.nav-tabs .nav-link {
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  color: #64748b;
+  font-weight: 600;
+  padding: 15px 30px;
+  transition: all 0.3s ease;
+  flex: 1;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.nav-tabs .nav-link:hover {
+  border-color: var(--primary-purple);
+  color: var(--primary-purple);
+}
+
+.nav-tabs .nav-link.active {
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark-purple));
+  border-color: transparent;
+  color: white;
+}
+
+.form-label {
+  color: var(--primary-purple);
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.form-control {
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  padding: 14px 18px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.form-control:focus {
+  border-color: var(--primary-purple);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+  outline: none;
+}
+
+.gender-group {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.gender-option {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-weight: 600;
+}
+
+.gender-option input[type="radio"] {
+  margin-right: 8px;
+}
+
+.gender-option:has(input:checked) {
+  border-color: var(--primary-purple);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(240, 147, 251, 0.1));
+  color: var(--primary-purple);
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.btn-submit {
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark-purple));
+  border: none;
+  color: white;
+  border-radius: 12px;
+  padding: 15px 30px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  width: 100%;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+}
+
+.password-strength {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.password-strength-bar {
+  height: 100%;
+  width: 0%;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.strength-weak { width: 33%; background: #f5576c; }
+.strength-medium { width: 66%; background: #f59e0b; }
+.strength-strong { width: 100%; background: #10b981; }
+
+.forgot-link {
+  color: var(--primary-purple);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<section class="auth-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="auth-card" data-aos="zoom-in">
+          <div class="auth-header">
+            <div class="auth-logo">
+              <i class="fas fa-dumbbell"></i>
+            </div>
+            <h2>MyFitness</h2>
+          </div>
+
+          <div class="auth-body">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+              {% endfor %}
+            {% endif %}
+
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link {% if tab == 'login' %}active{% endif %}" data-bs-toggle="tab" href="#signin-tab" role="tab">
+                  <i class="fas fa-sign-in-alt me-2"></i>Login
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if tab != 'login' %}active{% endif %}" data-bs-toggle="tab" href="#signup-tab" role="tab">
+                  <i class="fas fa-user-plus me-2"></i>Sign Up
+                </a>
+              </li>
+            </ul>
+
+            <div class="tab-content">
+              <!-- Login Tab -->
+              <div class="tab-pane fade {% if tab == 'login' %}show active{% endif %}" id="signin-tab" role="tabpanel">
+                <div class="text-center mb-4">
+                  <h4 class="fw-bold" style="color: var(--primary-purple);">Welcome Back!</h4>
+                  <p class="text-muted">Sign in to continue your fitness journey</p>
+                </div>
+
+                <form action="{% url 'login' %}" method="post">
+                  {% csrf_token %}
+                  <label class="form-label">
+                    <i class="fas fa-user me-2"></i>Username
+                  </label>
+                  <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+                  
+                  <label class="form-label">
+                    <i class="fas fa-lock me-2"></i>Password
+                  </label>
+                  <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+                  
+                  <div class="text-end mb-3">
+                    <a href="{% url 'password_reset' %}" class="forgot-link">
+                      <i class="fas fa-key me-1"></i>Forgot Password?
+                    </a>
+                  </div>
+
+                  <button type="submit" class="btn-submit">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                  </button>
+                </form>
+              </div>
+
+              <!-- Sign Up Tab -->
+              <div class="tab-pane fade {% if tab != 'login' %}show active{% endif %}" id="signup-tab" role="tabpanel">
+                <div class="text-center mb-4">
+                  <h4 class="fw-bold" style="color: var(--primary-purple);">Create Account</h4>
+                  <p class="text-muted">Join thousands achieving their fitness goals</p>
+                </div>
+
+                <form action="{% url 'signup' %}" method="post">
+                  {% csrf_token %}
+                  <label class="form-label">
+                    <i class="fas fa-user me-2"></i>Username
+                  </label>
+                  <input type="text" name="name1" class="form-control" placeholder="Choose a username" required>
+                  
+                  <label class="form-label">
+                    <i class="fas fa-envelope me-2"></i>Email Address
+                  </label>
+                  <input type="email" name="email1" class="form-control" placeholder="your@email.com" required>
+                  
+                  <label class="form-label">
+                    <i class="fas fa-lock me-2"></i>Password
+                  </label>
+                  <input type="password" name="password1" id="signup-password" class="form-control" placeholder="Create a strong password" required>
+                  <div class="password-strength">
+                    <div class="password-strength-bar" id="strengthBar"></div>
+                  </div>
+                  
+                  <label class="form-label">
+                    <i class="fas fa-calendar me-2"></i>Date of Birth
+                  </label>
+                  <input type="date" name="dob1" class="form-control">
+                  
+                  <label class="form-label">
+                    <i class="fas fa-venus-mars me-2"></i>Gender
+                  </label>
+                  <div class="gender-group">
+                    <label class="gender-option">
+                      <input type="radio" name="gender1" value="male" required> Male
+                    </label>
+                    <label class="gender-option">
+                      <input type="radio" name="gender1" value="female" required> Female
+                    </label>
+                  </div>
+
+                  <label class="form-label">
+                    <i class="fas fa-phone me-2"></i>Phone Number
+                  </label>
+                  <input type="tel" name="phone1" class="form-control" placeholder="10-digit phone number" pattern="[0-9]{10}">
+                  
+                  <label class="form-label">
+                    <i class="fas fa-map-marker-alt me-2"></i>Address
+                  </label>
+                  <input type="text" name="address1" class="form-control" placeholder="Your address">
+
+                  <label class="checkbox-label">
+                    <input type="checkbox" id="agree-check" required>
+                    <span>I agree to the terms & conditions</span>
+                  </label>
+
+                  <button type="submit" class="btn-submit">
+                    <i class="fas fa-rocket me-2"></i>Create Account
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({duration: 1000});
+
+// Password strength indicator
+const signupPassword = document.getElementById('signup-password');
+const strengthBar = document.getElementById('strengthBar');
+
+if (signupPassword) {
+  signupPassword.addEventListener('input', function() {
+    const value = this.value;
+    const strength = calculatePasswordStrength(value);
+    
+    strengthBar.className = 'password-strength-bar';
+    if (strength === 'weak') {
+      strengthBar.classList.add('strength-weak');
+    } else if (strength === 'medium') {
+      strengthBar.classList.add('strength-medium');
+    } else if (strength === 'strong') {
+      strengthBar.classList.add('strength-strong');
+    }
+  });
+}
+
+function calculatePasswordStrength(password) {
+  if (password.length === 0) return '';
+  if (password.length < 6) return 'weak';
+  
+  let strength = 0;
+  if (password.length >= 8) strength++;
+  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+  if (/\d/.test(password)) strength++;
+  if (/[^a-zA-Z\d]/.test(password)) strength++;
+  
+  if (strength <= 1) return 'weak';
+  if (strength <= 3) return 'medium';
+  return 'strong';
+}
+</script>
+{% endblock %}

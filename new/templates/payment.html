@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Payment - {{ plan.name }} Plan - MyFitness{% endblock %}
+
+{% block main %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-6">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <div class="row">
+                        <div class="col-3">
+                            <i class="fas fa-credit-card fa-3x"></i>
+                        </div>
+                        <div class="col-9">
+                            <h3>Complete Your Subscription</h3>
+                            <h4 class="mb-0">{{ plan.name }}</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Plan Summary -->
+                    <div class="p-4 border-bottom">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <h5 class="text-primary">{{ plan.price }}<small class="text-muted">/mo</small></h5>
+                                <small>Price</small>
+                            </div>
+                            <div class="col-4">
+                                <h5>{{ plan.duration_days }} days</h5>
+                                <small>Duration</small>
+                            </div>
+                            <div class="col-4">
+                                <h5>{{ plan.features|length }} features</h5>
+                                <small>Included</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Form -->
+                    <div class="p-4">
+                        <form method="post" action="{% url 'process_payment' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="plan_id" value="{{ plan.id }}">
+                            <h5 class="mb-3">Payment Details</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form|crispy }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="card h-100 border-light">
+                                        <div class="card-body">
+                                            <h6>Plan Features</h6>
+                                            <ul class="list-unstyled small">
+                                                {% for feature in plan.features %}
+                                                <li class="mb-1"><i class="fas fa-check text-success me-2"></i>{{ feature }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Payment Buttons -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="card" value="card" checked>
+                                        <label class="form-check-label" for="card">
+                                            <i class="fab fa-cc-visa text-primary me-1"></i>
+                                            <i class="fab fa-cc-mastercard text-primary me-1"></i>
+                                            Credit/Debit Card
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="upi" value="upi">
+                                        <label class="form-check-label" for="upi">
+                                            <i class="fas fa-mobile-alt me-1"></i> UPI
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card border-0 bg-light">
+                                        <div class="card-body text-end">
+                                            <h4 class="text-primary mb-0">₹{{ amount }}</h4>
+                                            <small>Total Amount</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 d-grid">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-lock me-2"></i>
+                                    Pay Now - ₹{{ amount }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Footer -->
+                    <div class="card-footer bg-light text-center border-0">
+                        <small class="text-muted">
+                            🔒 Secure Payment • Powered by Razorpay Demo • No charges applied
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

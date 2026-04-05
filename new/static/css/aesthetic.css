@@ -1,0 +1,37 @@
+/* Aesthetic CSS for Fitness App */
+:root {
+  --primary-color: #f97316;
+  --secondary-color: #10b981;
+  --dark-bg: #0f172a;
+  --card-bg: #1e293b;
+  --text-light: #f8fafc;
+  --text-gray: #94a3b8;
+}
+
+body {
+  background-color: var(--dark-bg);
+  color: var(--text-light);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+  background-color: #ea580c;
+  border-color: #ea580c;
+}
+
+.card {
+  background-color: var(--card-bg);
+  border: none;
+}
+
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-secondary {
+  color: var(--secondary-color) !important;
+}

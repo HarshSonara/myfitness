@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ exercise.name }} - Exercise Details{% endblock %}
+
+{% block main %}
+<!-- Hero Header -->
+<section class="py-5 text-white text-center position-relative overflow-hidden" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);">
+  <div class="container">
+    <h1 class="display-3 fw-bold mb-3" data-aos="fade-down">{{ exercise.name }}</h1>
+    <p class="lead fs-4 mb-4" data-aos="fade-up">{{ exercise.description }}</p>
+    <div class="row g-3 justify-content-center">
+      <div class="col-auto" data-aos="fade-up" data-aos-delay="100">
+        <span class="badge bg-warning text-dark fs-5 px-4 py-2">{{ exercise.difficulty|title }}</span>
+      </div>
+      <div class="col-auto" data-aos="fade-up" data-aos-delay="200">
+        <span class="badge bg-success fs-5 px-4 py-2">{{ exercise.target_muscle|title }}</span>
+      </div>
+      <div class="col-auto" data-aos="fade-up" data-aos-delay="300">
+        <span class="badge bg-info fs-5 px-4 py-2">{{ exercise.equipment_needed|default:"Bodyweight" }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Main Content -->
+<div class="container py-5" style="background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);">
+  <div class="row g-5">
+    <!-- Left Main Details -->
+    <div class="col-lg-8" data-aos="fade-right">
+      
+      {% if exercise.youtube_url %}
+      <!-- YouTube Video Section -->
+      <div class="card border-0 shadow-lg mb-4" style="border-radius: 20px; overflow: hidden;">
+        <div class="card-body p-0">
+          <div class="ratio ratio-16x9">
+            <iframe 
+              src="{{ exercise.get_youtube_embed_url }}" 
+              title="{{ exercise.name }} Tutorial" 
+              frameborder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+        <div class="card-footer bg-white border-0 p-4">
+          <h5 class="mb-2" style="color: var(--primary-purple);">
+            <i class="fab fa-youtube text-danger me-2"></i>Video Tutorial
+          </h5>
+          <p class="text-muted mb-2">Watch this video to learn the proper form and technique</p>
+          <a href="{{ exercise.youtube_url }}" target="_blank" class="btn btn-sm btn-outline-danger">
+            <i class="fab fa-youtube me-2"></i>Watch on YouTube
+          </a>
+        </div>
+      </div>
+      {% endif %}
+      
+      <div class="card border-0 shadow-lg p-4" style="border-radius: 20px;">
+        <!-- Key Stats -->
+        <div class="row g-4 mb-5">
+          <div class="col-md-3">
+            <div class="text-center p-4 rounded-3" style="background: linear-gradient(135deg, #fff5f7, #ffe8f0);">
+              <i class="fas fa-fire fa-3x mb-3" style="color: #f59e0b;"></i>
+              <div class="fs-1 fw-bold" style="color: #f59e0b;">{{ exercise.calories_per_minute }}</div>
+              <small class="text-muted">cal/min</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="text-center p-4 rounded-3" style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe);">
+              <i class="fas fa-clock fa-3x mb-3" style="color: #3b82f6;"></i>
+              <div class="fs-1 fw-bold" style="color: #3b82f6;">30</div>
+              <small class="text-muted">recommended min</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="text-center p-4 rounded-3" style="background: linear-gradient(135deg, #f0fdf4, #dcfce7);">
+              <i class="fas fa-signal fa-3x mb-3" style="color: #10b981;"></i>
+              <div class="fs-6 fw-bold" style="color: #10b981;">{{ exercise.difficulty|title }}</div>
+              <small class="text-muted">level</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="text-center p-4 rounded-3" style="background: linear-gradient(135deg, #f8f9ff, #f0f4ff);">
+              <i class="fas fa-tools fa-3x mb-3" style="color: #667eea;"></i>
+              <div class="fs-6 fw-bold" style="color: #667eea;">{{ exercise.equipment_needed|default:"Bodyweight"|truncatechars:10 }}</div>
+              <small class="text-muted">equipment</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step-by-Step Guide -->
+        <div class="p-4 mb-4 rounded-3" style="background: linear-gradient(135deg, #f8f9ff, #ffffff);">
+          <h3 class="fw-bold mb-4" style="color: var(--primary-purple);">
+            <i class="fas fa-list-ol me-3"></i>How To Perform
+          </h3>
+          <ol class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent border-0 p-3">
+              <i class="fas fa-check-circle me-3" style="color: #10b981;"></i>
+              <span class="text-dark">Position feet shoulder-width apart, maintain proper posture</span>
+            </li>
+            <li class="list-group-item bg-transparent border-0 p-3">
+              <i class="fas fa-check-circle me-3" style="color: #10b981;"></i>
+              <span class="text-dark">Engage your core and maintain controlled breathing</span>
+            </li>
+            <li class="list-group-item bg-transparent border-0 p-3">
+              <i class="fas fa-check-circle me-3" style="color: #10b981;"></i>
+              <span class="text-dark">Execute the movement with proper form and technique</span>
+            </li>
+            <li class="list-group-item bg-transparent border-0 p-3">
+              <i class="fas fa-check-circle me-3" style="color: #10b981;"></i>
+              <span class="text-dark">Control the eccentric (lowering) phase for maximum benefit</span>
+            </li>
+            <li class="list-group-item bg-transparent border-0 p-3">
+              <i class="fas fa-check-circle me-3" style="color: #10b981;"></i>
+              <span class="text-dark">Repeat for target reps/sets with adequate rest between sets</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="p-4 rounded-3" style="background: linear-gradient(135deg, #fff5f7, #ffffff);">
+          <h3 class="fw-bold mb-4" style="color: var(--primary-purple);">
+            <i class="fas fa-lightbulb me-3" style="color: #f59e0b;"></i>Pro Tips
+          </h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="rounded-circle p-3 me-3" style="background: linear-gradient(135deg, #fef3c7, #fde68a); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-exclamation-triangle" style="color: #92400e;"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1" style="color: var(--primary-purple);">Common Mistakes</h6>
+                  <p class="small text-muted mb-0">Avoid using momentum, maintain full range of motion</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="d-flex">
+                <div class="rounded-circle p-3 me-3" style="background: linear-gradient(135deg, #d1fae5, #a7f3d0); width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fas fa-check" style="color: #065f46;"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold mb-1" style="color: var(--primary-purple);">Perfect Form</h6>
+                  <p class="small text-muted mb-0">Focus on muscle contraction, breathe properly</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Sidebar -->
+    <div class="col-lg-4" data-aos="fade-left">
+      <!-- Quick Log -->
+      <div class="card border-0 shadow-lg mb-4 p-4" style="border-radius: 20px;">
+        <h4 class="fw-bold mb-4" style="color: var(--primary-purple);">
+          <i class="fas fa-plus-circle me-2"></i>Quick Actions
+        </h4>
+        {% if user.is_authenticated %}
+        <a href="{% url 'workout_logging' %}" class="btn btn-gradient-purple w-100 mb-3">
+          <i class="fas fa-dumbbell me-2"></i>Log This Exercise
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}" class="btn btn-gradient-purple w-100 mb-3">
+          <i class="fas fa-sign-in-alt me-2"></i>Login to Log
+        </a>
+        {% endif %}
+        <div class="text-center p-3 rounded-3" style="background: linear-gradient(135deg, #f8f9ff, #ffffff);">
+          <small class="text-muted">Recommended: 3 sets × 12 reps</small>
+        </div>
+      </div>
+
+      <!-- Calorie Calculator -->
+      <div class="card border-0 shadow-lg p-4" style="border-radius: 20px;">
+        <h4 class="fw-bold mb-4" style="color: var(--primary-purple);">
+          <i class="fas fa-calculator me-2"></i>Calorie Calculator
+        </h4>
+        <div class="row text-center g-3">
+          <div class="col-6">
+            <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #fff5f7, #ffe8f0);">
+              <div class="fs-4 fw-bold" style="color: #f59e0b;">
+                {% widthratio exercise.calories_per_minute 1 30 %}
+              </div>
+              <small class="text-muted">30 min session</small>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="p-3 rounded-3" style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe);">
+              <div class="fs-4 fw-bold" style="color: #3b82f6;">
+                {% widthratio exercise.calories_per_minute 1 60 %}
+              </div>
+              <small class="text-muted">60 min session</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Back to Exercises -->
+      <div class="card border-0 shadow-lg mt-4 p-4" style="border-radius: 20px;">
+        <a href="{% url 'exercise_list' %}" class="btn btn-outline-secondary w-100" style="border-radius: 12px;">
+          <i class="fas fa-arrow-left me-2"></i>Back to Exercises
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+:root {
+  --primary-purple: #667eea;
+  --primary-dark-purple: #764ba2;
+  --primary-pink: #f093fb;
+}
+
+.btn-gradient-purple {
+  background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark-purple));
+  border: none;
+  color: white;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+.btn-gradient-purple:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+  color: white;
+}
+</style>
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({duration: 1000});
+</script>
+{% endblock %}

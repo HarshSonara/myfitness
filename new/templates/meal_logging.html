@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Log Meal - MyFitness{% endblock %}
+
+{% block main %}
+<div class="container py-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0"><i class="fas fa-utensils"></i> Log Your Meal</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="post" action="{% url 'meal_logging' %}">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-save"></i> Log Meal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Recent Meals -->
+            {% if recent_meals %}
+            <div class="card mt-4 shadow">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-history"></i> Recent Meals</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Meal</th>
+                                    <th>Quantity</th>
+                                    <th>Calories</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for meal in recent_meals %}
+                                <tr>
+                                    <td>{{ meal.date }}</td>
+                                    <td>{{ meal.meal.name }}</td>
+                                    <td>{{ meal.quantity }}</td>
+                                    <td>{{ meal.calories_consumed|floatformat:0 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Today's Nutrition Summary -->
+            {% if today_meals %}
+            <div class="card mt-4 shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie"></i> Today's Calories</h5>
+                </div>
+                <div class="card-body">
+                    <p class="lead text-center mb-0">Total: {{ today_calories_consumed|floatformat:0 }} kcal</p>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

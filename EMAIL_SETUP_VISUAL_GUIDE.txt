@@ -1,0 +1,152 @@
+╔══════════════════════════════════════════════════════════════════╗
+║           GMAIL SETUP FOR PASSWORD RESET - VISUAL GUIDE          ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─────────────────────────────────────────────────────────────────┐
+│ STEP 1: GET APP PASSWORD FROM GOOGLE                            │
+└─────────────────────────────────────────────────────────────────┘
+
+1. Go to: https://myaccount.google.com/security
+
+2. Find "2-Step Verification" → Click TURN ON
+   ┌──────────────────────────────────┐
+   │  2-Step Verification             │
+   │  [Turn On]                       │
+   └──────────────────────────────────┘
+
+3. After enabling, find "App passwords" → Click
+   ┌──────────────────────────────────┐
+   │  App passwords                   │
+   │  [>]                             │
+   └──────────────────────────────────┘
+
+4. Select app: Mail
+   Select device: Other (Custom name)
+   Type: MyFitness Django App
+   
+5. Click GENERATE
+   
+6. Google shows you:
+   ┌──────────────────────────────────┐
+   │  Your app password for           │
+   │  MyFitness Django App            │
+   │                                  │
+   │  abcd efgh ijkl mnop            │
+   │                                  │
+   │  [Done]                          │
+   └──────────────────────────────────┘
+   
+   ⚠️  COPY THIS PASSWORD NOW! ⚠️
+
+┌─────────────────────────────────────────────────────────────────┐
+│ STEP 2: UPDATE DJANGO SETTINGS                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+Open: myproject/settings.py
+
+Find these lines (at the bottom):
+
+┌─────────────────────────────────────────────────────────────────┐
+│ # Email Configuration for Gmail                                 │
+│ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'  │
+│ EMAIL_HOST = 'smtp.gmail.com'                                   │
+│ EMAIL_PORT = 587                                                │
+│ EMAIL_USE_TLS = True                                            │
+│ EMAIL_HOST_USER = 'your-email@gmail.com'  ← CHANGE THIS       │
+│ EMAIL_HOST_PASSWORD = 'your-app-password'  ← CHANGE THIS       │
+│ DEFAULT_FROM_EMAIL = 'MyFitness <your-email@gmail.com>'        │
+└─────────────────────────────────────────────────────────────────┘
+
+Replace with YOUR details:
+
+┌─────────────────────────────────────────────────────────────────┐
+│ EMAIL_HOST_USER = 'sonaraharsh791@gmail.com'                   │
+│ EMAIL_HOST_PASSWORD = 'abcdefghijklmnop'  ← No spaces!         │
+│ DEFAULT_FROM_EMAIL = 'MyFitness <sonaraharsh791@gmail.com>'    │
+└─────────────────────────────────────────────────────────────────┘
+
+⚠️  IMPORTANT: Remove spaces from App Password!
+    ✗ Wrong: 'abcd efgh ijkl mnop'
+    ✓ Right: 'abcdefghijklmnop'
+
+┌─────────────────────────────────────────────────────────────────┐
+│ STEP 3: RESTART SERVER                                          │
+└─────────────────────────────────────────────────────────────────┘
+
+In terminal:
+1. Press Ctrl+C to stop server
+2. Run: python manage.py runserver
+
+┌─────────────────────────────────────────────────────────────────┐
+│ STEP 4: TEST IT!                                                │
+└─────────────────────────────────────────────────────────────────┘
+
+1. Go to: http://127.0.0.1:8000/password-reset/
+
+2. Enter email address
+
+3. Click "Send Reset Link"
+
+4. Check your email inbox!
+
+   ┌──────────────────────────────────────────────────────────┐
+   │  📧 Gmail Inbox                                          │
+   ├──────────────────────────────────────────────────────────┤
+   │  ✉️  MyFitness                                           │
+   │     Password Reset - MyFitness                           │
+   │     Click here to reset your password...                 │
+   └──────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────┐
+│ TROUBLESHOOTING                                                  │
+└─────────────────────────────────────────────────────────────────┘
+
+❌ Problem: SMTPAuthenticationError
+✅ Solution: 
+   - Use App Password, NOT regular password
+   - Remove spaces from App Password
+   - Enable 2-Step Verification
+
+❌ Problem: Email not received
+✅ Solution:
+   - Check spam folder
+   - Verify email in database is correct
+   - Check Django console for errors
+
+❌ Problem: Can't find "App passwords"
+✅ Solution:
+   - Enable 2-Step Verification first
+   - Wait 5 minutes
+   - Refresh Google Account page
+
+┌─────────────────────────────────────────────────────────────────┐
+│ TESTING WITHOUT GMAIL (OPTIONAL)                                │
+└─────────────────────────────────────────────────────────────────┘
+
+Want to test without setting up Gmail?
+
+In settings.py, change:
+┌─────────────────────────────────────────────────────────────────┐
+│ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'│
+└─────────────────────────────────────────────────────────────────┘
+
+Emails will print in terminal instead of sending!
+
+┌─────────────────────────────────────────────────────────────────┐
+│ CHECKLIST                                                        │
+└─────────────────────────────────────────────────────────────────┘
+
+□ Enabled 2-Step Verification on Gmail
+□ Generated App Password
+□ Copied App Password (removed spaces)
+□ Updated EMAIL_HOST_USER in settings.py
+□ Updated EMAIL_HOST_PASSWORD in settings.py
+□ Updated DEFAULT_FROM_EMAIL in settings.py
+□ Restarted Django server
+□ Tested password reset
+□ Received email successfully
+□ 🎉 SUCCESS!
+
+╔══════════════════════════════════════════════════════════════════╗
+║  That's it! Your password reset emails are now working! 📧✨     ║
+╚══════════════════════════════════════════════════════════════════╝

@@ -1,0 +1,26 @@
+# Copy and paste these commands one by one into your terminal
+# For Harsh Sonara - https://github.com/HarshSonara
+
+# Step 1: Initialize git
+git init
+
+# Step 2: Add all files
+git add .
+
+# Step 3: Create first commit
+git commit -m "Initial commit: MyFitness Django project"
+
+# Step 4: Add remote (change 'myfitness' if you used different repo name)
+git remote add origin https://github.com/HarshSonara/myfitness.git
+
+# Step 5: Push to GitHub
+git branch -M main
+git push -u origin main
+
+# You'll be asked for:
+# Username: HarshSonara
+# Password: Your Personal Access Token (not your account password)
+
+# Get token here: https://github.com/settings/tokens
+
+# Done! Your project will be at: https://github.com/HarshSonara/myfitness
